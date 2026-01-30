@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hey Rosalyn 🌙</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+
+body{
+  height:100vh;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  overflow:hidden;
+}
+
+/* 🌌 Floating stars background */
+.stars{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:url("https://i.imgur.com/7b1Z4rC.png");
+  opacity:0.25;
+  animation:starsMove 80s linear infinite;
+  z-index:0;
+}
+@keyframes starsMove{
+  from{background-position:0 0}
+  to{background-position:10000px 5000px}
+}
+
+/* 🌹🦋🤍 Floating emojis */
+.float{
+  position:absolute;
+  animation:floatUp linear infinite;
+  opacity:0.7;
+  z-index:1;
+}
+@keyframes floatUp{
+  from{transform:translateY(110vh)}
+  to{transform:translateY(-20vh)}
+}
+
+/* 💖 Card */
+.card{
+  width:90%;
+  max-width:420px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(14px);
+  border-radius:22px;
+  padding:28px;
+  text-align:center;
+  box-shadow:0 0 45px rgba(0,0,0,.4);
+  z-index:5;
+  animation:fadeIn 2s ease;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ✨ Glowing name */
+h1{
+  color:#ffd6e8;
+  text-shadow:0 0 12px #ffd6e8,0 0 28px #ff9acb;
+  animation:glow 2.5s ease-in-out infinite alternate;
+}
+@keyframes glow{
+  from{text-shadow:0 0 10px #ffd6e8}
+  to{text-shadow:0 0 32px #ff9acb}
+}
+
+/* 🌸 Flower */
+.flower{
+  font-size:2.6em;
+  animation:spin 12s linear infinite;
+}
+@keyframes spin{
+  from{transform:rotate(0)}
+  to{transform:rotate(360deg)}
+}
+
+/* 📜 Text area */
+.text-area{
+  max-height:250px;
+  overflow-y:auto;
+  margin-top:12px;
+  scroll-behavior:smooth;
+}
+.text-area::-webkit-scrollbar{width:4px}
+.text-area::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.3);
+  border-radius:10px;
+}
+
+.message{
+  margin:14px 0;
+  line-height:1.6;
+  opacity:0;
+  animation:fadeText 1s forwards;
+}
+@keyframes fadeText{to{opacity:1}}
+
+button{
+  margin-top:14px;
+  padding:10px 22px;
+  border:none;
+  border-radius:30px;
+  background:#ffd6e8;
+  cursor:pointer;
+  font-size:1em;
+  transition:.3s;
+}
+button:hover{transform:scale(1.08);background:#fff}
+
+/* 😊 Smile */
+.smile{
+  margin-top:18px;
+  font-size:1.1em;
+  display:none;
+  animation:fadeIn 1.2s ease;
+}
+
+/* 🎵 Music button */
+.music-btn{
+  position:absolute;
+  bottom:20px;
+  right:20px;
+  border:none;
+  background:rgba(255,255,255,.2);
+  border-radius:50%;
+  width:46px;
+  height:46px;
+  font-size:1.2em;
+  color:white;
+  cursor:pointer;
+  z-index:6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+
+<!-- 🌹🦋🤍 Floating emojis -->
+<script>
+const emojis=["🌹","🌹","🌹","🦋","🦋","🦋","🤍","🤍","🤍"];
+for(let i=0;i<20;i++){
+  let e=document.createElement("div");
+  e.className="float";
+  e.innerText=emojis[Math.floor(Math.random()*emojis.length)];
+  e.style.left=Math.random()*100+"%";
+  e.style.fontSize=(1.2+Math.random()*1.6)+"em";
+  e.style.animationDuration=(12+Math.random()*12)+"s";
+  document.body.appendChild(e);
+}
+</script>
+
+<!-- 🎵 Music -->
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/10/25/audio_9b52b3a6b1.mp3">
+</audio>
+<button class="music-btn" onclick="toggleMusic()">🎵</button>
+
+<div class="card">
+  <h1>Rosalyn 🌙</h1>
+  <div class="flower">🌸</div>
+
+  <div id="text" class="text-area"></div>
+
+  <button onclick="nextMessage()">Continue</button>
+  <button onclick="smile()">Smile 😊</button>
+
+  <div class="smile" id="smileBox"></div>
+
+  <div style="margin-top:10px;font-size:.8em;opacity:.6">
+    — your first friend
+  </div>
+</div>
+
+<script>
+/* 💬 Messages */
+const messages=[
+"I don’t know why, but this felt like a good place to start.",
+"You said you act tough… and I kind of like that 😌",
+"Strong people still feel deeply.",
+"You surprised yourself opening up a little.",
+"I liked that you trusted me.",
+"You said you don’t really have friends.",
+"So maybe this is simple.",
+"I’ll be that first friend.",
+"No pressure. No rush.",
+"Just someone who will always be there🌙"
+];
+
+let msgIndex=0;
+function nextMessage(){
+  if(msgIndex<messages.length){
+    let p=document.createElement("p");
+    p.className="message";
+    p.innerText=messages[msgIndex];
+    let t=document.getElementById("text");
+    t.appendChild(p);
+    t.scrollTop=t.scrollHeight;
+    msgIndex++;
+  }
+}
+
+/* 😊 Smile button (5 times) */
+let smileCount=0;
+const smileTexts=[
+"Hey… I see that smile 😊",
+"That smile looks good on you 🦋",
+"Careful… you’re making the roses jealous 🌹",
+"Somewhere right now, someone’s happy you smiled 🤍",
+"Okay… that one was special 🌙✨"
+];
+
+function smile(){
+  if(smileCount<5){
+    let box=document.getElementById("smileBox");
+    box.style.display="block";
+    box.innerText=smileTexts[smileCount];
+    smileCount++;
+  }
+}
+
+/* 🎵 Music */
+const music=document.getElementById("music");
+function toggleMusic(){
+  music.paused?music.play():music.pause();
+}
+document.body.addEventListener("click",()=>{
+  if(music.paused) music.play();
+},{once:true});
+
+/* 📊 Open tracking */
+fetch("https://script.google.com/macros/s/AKfycbxqm6Ya1lTeEScMSTgfQQVNaV3wOdWngJPCgbONRsmMkHDp5g3hv6gkl9_HYAMbooPK/exec");
+</script>
+
+</body>
+</html>
