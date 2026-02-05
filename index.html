@@ -2,246 +2,221 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Hey Rosalyn 🌙</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Rosa ❤️</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
-
-body{
-  height:100vh;
-  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:white;
-  overflow:hidden;
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
 }
 
-/* 🌌 Floating stars background */
-.stars{
-  position:absolute;
-  width:100%;
-  height:100%;
-  background:url("https://i.imgur.com/7b1Z4rC.png");
-  opacity:0.25;
-  animation:starsMove 80s linear infinite;
-  z-index:0;
-}
-@keyframes starsMove{
-  from{background-position:0 0}
-  to{background-position:10000px 5000px}
+/* 🖼️ Background image layer */
+.bg {
+    position: fixed;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(6px) brightness(0.55);
+    transition: opacity 2.5s ease;
+    z-index: -3;
 }
 
-/* 🌹🦋🤍 Floating emojis */
-.float{
-  position:absolute;
-  animation:floatUp linear infinite;
-  opacity:0.7;
-  z-index:1;
-}
-@keyframes floatUp{
-  from{transform:translateY(110vh)}
-  to{transform:translateY(-20vh)}
+/* Dark overlay */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+    z-index: -2;
 }
 
-/* 💖 Card */
-.card{
-  width:90%;
-  max-width:420px;
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(14px);
-  border-radius:22px;
-  padding:28px;
-  text-align:center;
-  box-shadow:0 0 45px rgba(0,0,0,.4);
-  z-index:5;
-  animation:fadeIn 2s ease;
-}
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(20px)}
-  to{opacity:1;transform:translateY(0)}
+/* Tap screen */
+.start {
+    position: fixed;
+    inset: 0;
+    background: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ff7eb3;
+    font-size: 28px;
+    letter-spacing: 1px;
+    z-index: 5;
+    cursor: pointer;
+    text-shadow: 0 0 20px #ff2f92;
 }
 
-/* ✨ Glowing name */
-h1{
-  color:#ffd6e8;
-  text-shadow:0 0 12px #ffd6e8,0 0 28px #ff9acb;
-  animation:glow 2.5s ease-in-out infinite alternate;
-}
-@keyframes glow{
-  from{text-shadow:0 0 10px #ffd6e8}
-  to{text-shadow:0 0 32px #ff9acb}
+/* Canvas */
+canvas { display: block; }
+
+/* 💖 Message */
+.message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 18px 28px;
+    border-radius: 16px;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(6px);
+    text-align: center;
+    opacity: 0;
+    animation: textIn 1.4s ease forwards;
+    animation-delay: 2.1s;
 }
 
-/* 🌸 Flower */
-.flower{
-  font-size:2.6em;
-  animation:spin 12s linear infinite;
-}
-@keyframes spin{
-  from{transform:rotate(0)}
-  to{transform:rotate(360deg)}
-}
-
-/* 📜 Text area */
-.text-area{
-  max-height:250px;
-  overflow-y:auto;
-  margin-top:12px;
-  scroll-behavior:smooth;
-}
-.text-area::-webkit-scrollbar{width:4px}
-.text-area::-webkit-scrollbar-thumb{
-  background:rgba(255,255,255,.3);
-  border-radius:10px;
+.message h1 {
+    font-size: 58px;
+    margin: 0;
+    background: linear-gradient(45deg, #ff9ad5, #ff2f92, #a67cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:
+        0 0 25px rgba(255,120,200,1),
+        0 0 80px rgba(180,120,255,0.9);
 }
 
-.message{
-  margin:14px 0;
-  line-height:1.6;
-  opacity:0;
-  animation:fadeText 1s forwards;
-}
-@keyframes fadeText{to{opacity:1}}
-
-button{
-  margin-top:14px;
-  padding:10px 22px;
-  border:none;
-  border-radius:30px;
-  background:#ffd6e8;
-  cursor:pointer;
-  font-size:1em;
-  transition:.3s;
-}
-button:hover{transform:scale(1.08);background:#fff}
-
-/* 😊 Smile */
-.smile{
-  margin-top:18px;
-  font-size:1.1em;
-  display:none;
-  animation:fadeIn 1.2s ease;
+.message p {
+    margin-top: 8px;
+    font-size: 24px;
+    color: #ffe6f3;
+    text-shadow: 0 0 25px rgba(255,180,220,1);
 }
 
-/* 🎵 Music button */
-.music-btn{
-  position:absolute;
-  bottom:20px;
-  right:20px;
-  border:none;
-  background:rgba(255,255,255,.2);
-  border-radius:50%;
-  width:46px;
-  height:46px;
-  font-size:1.2em;
-  color:white;
-  cursor:pointer;
-  z-index:6;
+@keyframes textIn {
+    to { opacity: 1; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="stars"></div>
+<div class="bg" id="bg1"></div>
+<div class="bg" id="bg2" style="opacity:0"></div>
+<div class="overlay"></div>
 
-<!-- 🌹🦋🤍 Floating emojis -->
-<script>
-const emojis=["🌹","🌹","🌹","🦋","🦋","🦋","🤍","🤍","🤍"];
-for(let i=0;i<20;i++){
-  let e=document.createElement("div");
-  e.className="float";
-  e.innerText=emojis[Math.floor(Math.random()*emojis.length)];
-  e.style.left=Math.random()*100+"%";
-  e.style.fontSize=(1.2+Math.random()*1.6)+"em";
-  e.style.animationDuration=(12+Math.random()*12)+"s";
-  document.body.appendChild(e);
-}
-</script>
+<div class="start" id="start">Tap to begin ❤️</div>
 
-<!-- 🎵 Music -->
-<audio id="music" loop>
-  <source src="https://cdn.pixabay.com/audio/2022/10/25/audio_9b52b3a6b1.mp3">
-</audio>
-<button class="music-btn" onclick="toggleMusic()">🎵</button>
+<canvas id="canvas"></canvas>
 
-<div class="card">
-  <h1>Rosalyn 🌙</h1>
-  <div class="flower">🌸</div>
-
-  <div id="text" class="text-area"></div>
-
-  <button onclick="nextMessage()">Continue</button>
-  <button onclick="smile()">Smile 😊</button>
-
-  <div class="smile" id="smileBox"></div>
-
-  <div style="margin-top:10px;font-size:.8em;opacity:.6">
-    — your first friend
-  </div>
+<div class="message">
+    <h1>ROSA ❤️</h1>
+    <p>my favorite person</p>
 </div>
 
 <script>
-/* 💬 Messages */
-const messages=[
-"I don’t know why, but this felt like a good place to start.",
-"You said you act tough… and I kind of like that 😌",
-"Strong people still feel deeply.",
-"You surprised yourself opening up a little.",
-"I liked that you trusted me.",
-"You said you don’t really have friends.",
-"So maybe this is simple.",
-"I’ll be that first friend.",
-"No pressure. No rush.",
-"Just someone who will always be there🌙"
-];
+const images = ["rosa1.jpg","rosa2.jpg","rosa3.jpg","rosa4.jpg"];
+let bgIndex = 0;
+const bg1 = document.getElementById("bg1");
+const bg2 = document.getElementById("bg2");
+let showingBg1 = true;
 
-let msgIndex=0;
-function nextMessage(){
-  if(msgIndex<messages.length){
-    let p=document.createElement("p");
-    p.className="message";
-    p.innerText=messages[msgIndex];
-    let t=document.getElementById("text");
-    t.appendChild(p);
-    t.scrollTop=t.scrollHeight;
-    msgIndex++;
-  }
+function switchBg() {
+    const next = images[bgIndex++ % images.length];
+    const show = showingBg1 ? bg2 : bg1;
+    const hide = showingBg1 ? bg1 : bg2;
+
+    show.style.backgroundImage = `url(${next})`;
+    show.style.opacity = 1;
+    hide.style.opacity = 0;
+
+    showingBg1 = !showingBg1;
 }
 
-/* 😊 Smile button (5 times) */
-let smileCount=0;
-const smileTexts=[
-"Hey… I see that smile 😊",
-"That smile looks good on you 🦋",
-"Careful… you’re making the roses jealous 🌹",
-"Somewhere right now, someone’s happy you smiled 🤍",
-"Okay… that one was special 🌙✨"
-];
+switchBg();
+setInterval(switchBg, 7000);
 
-function smile(){
-  if(smileCount<5){
-    let box=document.getElementById("smileBox");
-    box.style.display="block";
-    box.innerText=smileTexts[smileCount];
-    smileCount++;
-  }
+/* 🎨 Canvas animation */
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+addEventListener("resize", () => {
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+});
+
+let running = false;
+let drawT = 0, scale = 0, time = 0, burstDone = false;
+const maxScale = Math.min(innerWidth, innerHeight) / 30;
+const particles = [];
+
+function heart(t,s){
+    return {
+        x:s*16*Math.sin(t)**3,
+        y:-s*(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))
+    };
 }
 
-/* 🎵 Music */
-const music=document.getElementById("music");
-function toggleMusic(){
-  music.paused?music.play():music.pause();
+function spark(x,y,p=1){
+    particles.push({
+        x,y,
+        vx:(Math.random()-0.5)*5*p,
+        vy:(Math.random()-0.5)*5*p,
+        life:90,
+        size:Math.random()*3+1,
+        hue:Math.random()*360
+    });
 }
-document.body.addEventListener("click",()=>{
-  if(music.paused) music.play();
-},{once:true});
 
-/* 📊 Open tracking */
-fetch("https://script.google.com/macros/s/AKfycbxqm6Ya1lTeEScMSTgfQQVNaV3wOdWngJPCgbONRsmMkHDp5g3hv6gkl9_HYAMbooPK/exec");
+function burst(cx,cy){ for(let i=0;i<280;i++) spark(cx,cy,2); }
+
+function pulse(){ return 1 + Math.sin(time*6)*0.05; }
+
+function drawLayer(cx,cy,s,w,a,h,b){
+    ctx.beginPath();
+    for(let i=0;i<drawT;i+=0.02){
+        const p=heart(i,s);
+        ctx.lineTo(cx+p.x,cy+p.y);
+        if(Math.random()<0.3) spark(cx+p.x,cy+p.y);
+    }
+    const hue=(time*40+h)%360;
+    ctx.strokeStyle=`hsla(${hue},100%,65%,${a})`;
+    ctx.lineWidth=w;
+    ctx.shadowBlur=b;
+    ctx.shadowColor=`hsla(${hue},100%,70%,1)`;
+    ctx.stroke();
+}
+
+function animate(){
+    if(!running) return;
+
+    ctx.fillStyle="rgba(0,0,0,0.25)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    const cx=canvas.width/2, cy=canvas.height/2;
+
+    if(drawT<Math.PI*2) drawT+=0.1;
+    else if(!burstDone){ burst(cx,cy); burstDone=true; }
+
+    if(scale<maxScale) scale+=1;
+    time+=0.08;
+    const s=scale*pulse();
+
+    drawLayer(cx,cy,s,24,0.25,0,90);
+    drawLayer(cx,cy,s,14,0.9,40,60);
+    drawLayer(cx,cy,s,6,1,80,30);
+
+    for(let i=particles.length-1;i>=0;i--){
+        const p=particles[i];
+        p.x+=p.vx; p.y+=p.vy; p.life--; p.hue+=2;
+        ctx.fillStyle=`hsla(${p.hue},100%,70%,${p.life/90})`;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+        ctx.fill();
+        if(p.life<=0) particles.splice(i,1);
+    }
+
+    requestAnimationFrame(animate);
+}
+
+/* 👆 Tap to see something(Rosalyn) only 🤣 */
+document.getElementById("start").onclick = () => {
+    document.getElementById("start").style.display = "none";
+    running = true;
+    animate();
+};
 </script>
-
 </body>
 </html>
